@@ -1,0 +1,2 @@
+ninja: Entering directory `/Users/xiani/Desktop/flutter_project/anaemot/android/app/.cxx/cmake/release/armeabi-v7a'
+[1/1] Linking C shared library /Users/xiani/Desktop/flutter_project/anaemot/build/app/intermediates/cmake/release/obj/armeabi-v7a/libconvertImage.so

@@ -1,0 +1,3 @@
+/Users/xiani/Desktop/flutter_project/anaemot/android/app/.cxx/cmake/debug/x86_64/CMakeFiles/rebuild_cache.dir
+/Users/xiani/Desktop/flutter_project/anaemot/android/app/.cxx/cmake/debug/x86_64/CMakeFiles/edit_cache.dir
+/Users/xiani/Desktop/flutter_project/anaemot/android/app/.cxx/cmake/debug/x86_64/CMakeFiles/convertImage.dir
