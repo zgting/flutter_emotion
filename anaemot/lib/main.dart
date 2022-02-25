@@ -67,9 +67,8 @@ class _MyHomePageState extends State {
   bool _isprocess = false;
   //post推送的地址
   TextEditingController _controller = TextEditingController();
-  String _posturl = "http://10.22.179.136:5050"; //默认地址
-  //static String _posturl = "http://192.168.0.104:5050/analyze";
-  //static String _posturl = "http://155.138.220.251:5000/analyze";
+  String _posturl = "http://192.168.0.104:5050";
+  
 
   //初始化表情参数
   void _initialEmotion() {
