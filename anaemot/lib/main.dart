@@ -31,7 +31,8 @@ class Person {
   List<Emotion> emotion = [];
   bool isface = false;
   double imgtobase64 = 0.0;
-  double postime = 0.0;
+  double totaltime = 0.0;
+  double dealimgtime = 0.0;
   double yuvtorgbtime = 0.0;
   Color textcolor = Colors.black;
 }
@@ -67,9 +68,33 @@ class _MyHomePageState extends State {
   bool _isprocess = false;
   //post推送的地址
   TextEditingController _controller = TextEditingController();
-  String _posturl = "http://192.168.0.104:5050";
-  
-
+  String _posturl = "http://101.43.241.28:5050"; //默认地址
+  //static String _posturl = "http://192.168.0.104:5050/analyze";
+  //static String _posturl = "http://155.138.220.251:5000/analyze";
+  int isChinese = 0; //1是中文 0是英文
+  //显示信息的中英文配置
+  List _configtext = [
+    [
+      ["yuvtorgb_time:", "yuvtorgb时间:"],
+      ["avg:", "平均:"],
+      ["var:", "方差:"],
+    ],
+    [
+      ["imgtobase_time:", "imgtobase时间:"],
+      ["avg:", "平均:"],
+      ["var:", "方差:"],
+    ],
+    [
+      ["dealimg_time:", "dealimg时间:"],
+      ["avg:", "平均:"],
+      ["var:", "方差:"],
+    ],
+    [
+      ["total_time:", "total时间:"],
+      ["avg:", "平均:"],
+      ["var:", "方差:"],
+    ],
+  ];
   //初始化表情参数
   void _initialEmotion() {
     List em = [
@@ -206,7 +231,7 @@ class _MyHomePageState extends State {
 
       var ins = ma['instance_1'];
       var emotion = ins['emotion'];
-
+      person.dealimgtime = ma["seconds"]; //图片在服务器处理的时间
       // 给结果赋值
       person.isface = true;
       person.dominantemotion = ins['dominant_emotion'].toString();
@@ -223,15 +248,36 @@ class _MyHomePageState extends State {
   }
 
   //测试参数的使用
-  List<double> yuvtorgbl = [];
+  List<double> yuvtorgbl = []; //本地转img时间
   double yuvavg = 0.0;
   double yuvdx = 0.0;
-  List<double> imagebase64l = [];
+  List<double> imagebase64l = []; //本地img转base64时间
   double imageavg = 0.0;
   double imagedx = 0.0;
-  List<double> posttimel = [];
-  double postavg = 0.0;
-  double postdx = 0.0;
+  List<double> totaltimel = []; //总时间
+  double totalavg = 0.0;
+  double totaldx = 0.0;
+  List<double> dealimgl = []; //服务器处理图片的时间
+  double dealimgavg = 0.0;
+  double dealimgdx = 0.0;
+
+  double getavg(List li) {
+    double avg = 0.0;
+    for (var item in li) {
+      avg += item;
+    }
+    avg /= li.length;
+    return avg;
+  }
+
+  double getdx(List li, double avg) {
+    double dx = 0.0;
+    for (var item in li) {
+      dx += (item - avg) * (item - avg);
+    }
+    dx /= li.length;
+    return dx;
+  }
 
   //处理图片
   _dealimage(CameraImage image) async {
@@ -249,38 +295,21 @@ class _MyHomePageState extends State {
       if (msg.isface) {
         _person = msg;
         imagebase64l.add(_person.imgtobase64);
-        posttimel.add(_person.postime);
         yuvtorgbl.add(_person.yuvtorgbtime);
-        imageavg = 0.0; //均值
-        for (var item in imagebase64l) {
-          imageavg += item;
-        }
-        imageavg /= imagebase64l.length;
-        imagedx = 0.0; //方差
-        for (var item in imagebase64l) {
-          imagedx += (item - imageavg) * (item - imageavg);
-        }
-        imagedx /= imagebase64l.length;
-        postavg = 0.0;
-        for (var item in posttimel) {
-          postavg += item;
-        }
-        postavg /= posttimel.length;
-        postdx = 0.0;
-        for (var item in posttimel) {
-          postdx += (item - postavg) * (item - postavg);
-        }
-        postdx /= posttimel.length;
-        yuvavg = 0.0;
-        for (var item in yuvtorgbl) {
-          yuvavg += item;
-        }
-        yuvavg /= yuvtorgbl.length;
-        yuvdx = 0.0;
-        for (var item in yuvtorgbl) {
-          yuvdx += (item - yuvavg) * (item - yuvavg);
-        }
-        yuvdx /= yuvtorgbl.length;
+        dealimgl.add(_person.dealimgtime);
+        totaltimel.add(_person.totaltime);
+        //imgtobase64
+        imageavg = getavg(imagebase64l); //均值
+        imagedx = getdx(imagebase64l, imageavg); //方差
+        //yuv
+        yuvavg = getavg(yuvtorgbl);
+        yuvdx = getdx(yuvtorgbl, yuvavg);
+        //dealimgavg
+        dealimgavg = getavg(dealimgl);
+        dealimgdx = getdx(dealimgl, dealimgavg);
+        //total
+        totalavg = getavg(totaltimel);
+        totaldx = getdx(totaltimel, totalavg);
       }
       _isprocess = false;
     });
@@ -312,13 +341,13 @@ class _MyHomePageState extends State {
     imgtoBasetime = DateTime.now();
     String base64Str = _imageToBase64(imglib.encodeJpg(img));
     imgtoBasetime = DateTime.now().difference(imgtoBasetime);
-    var posttime;
-    posttime = DateTime.now();
+    var totaltime;
+    totaltime = DateTime.now();
     Person person = await _postRequest(base64Str, msg[1]);
-    posttime = DateTime.now().difference(posttime);
+    totaltime = DateTime.now().difference(totaltime);
     person.yuvtorgbtime = yuvtorgb.inMicroseconds * 1.0 / 1000000; //转为秒
     person.imgtobase64 = imgtoBasetime.inMicroseconds * 1.0 / 1000000;
-    person.postime = posttime.inMicroseconds * 1.0 / 1000000;
+    person.totaltime = totaltime.inMicroseconds * 1.0 / 1000000;
     replyto.send(person);
   }
 
@@ -356,7 +385,7 @@ class _MyHomePageState extends State {
         padding: EdgeInsets.only(left: 10, bottom: 5),
         width: MediaQuery.of(context).size.width / 5,
         child: Text(
-          item.emotionChina,
+          isChinese == 1 ? item.emotionChina : item.emotionText,
           style: TextStyle(color: _person.textcolor),
         ),
       ),
@@ -388,6 +417,31 @@ class _MyHomePageState extends State {
     ];
   }
 
+  //显示测试信息
+  Widget buildTestInfo() {
+    Widget content; //单独一个widget组件，用于返回需要生成的内容widget
+    List<Widget> tiles = []; //先建一个数组用于存放循环生成的widget
+
+    for (var item in _configtext) {
+      tiles.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(item[0][isChinese] +
+                _person.yuvtorgbtime.toStringAsFixed(5) +
+                " "),
+            Text(item[1][isChinese] + yuvavg.toStringAsFixed(5) + " "),
+            Text(item[2][isChinese] + yuvdx.toStringAsFixed(5)),
+          ],
+        ),
+      );
+    }
+    content = Column(
+      children: tiles,
+    );
+    return content;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -405,38 +459,13 @@ class _MyHomePageState extends State {
                       )
                     : CircularProgressIndicator(),
               ),
+              buildTestInfo(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("yuvtorgb时间" +
-                      _person.yuvtorgbtime.toStringAsFixed(5) +
-                      " "),
-                  Text("平均" + yuvavg.toStringAsFixed(5) + " "),
-                  Text("方差" + yuvdx.toStringAsFixed(5)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("imgtobase时间" +
-                      _person.imgtobase64.toStringAsFixed(5) +
-                      " "),
-                  Text("平均" + imageavg.toStringAsFixed(5) + " "),
-                  Text("方差" + imagedx.toStringAsFixed(5)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("post时间" + _person.postime.toStringAsFixed(5) + " "),
-                  Text("平均" + postavg.toStringAsFixed(5) + " "),
-                  Text("方法" + postdx.toStringAsFixed(5)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("张数:" + yuvtorgbl.length.toString()),
+                  Text(isChinese == 1
+                      ? "张数:"
+                      : "pages:" + yuvtorgbl.length.toString()),
                 ],
               ),
               Row(
@@ -446,12 +475,14 @@ class _MyHomePageState extends State {
                     child: TextField(
                       controller: _controller,
                       decoration: InputDecoration(
-                        labelText: "请输入IP和端口：",
+                        labelText: isChinese == 1
+                            ? "请输入IP和端口:"
+                            : "Pleae Input IP and port:",
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red)),
                       ),
                     ),
-                    width: 260,
+                    width: 220,
                   ),
                   SizedBox(
                     width: 5,
@@ -460,7 +491,7 @@ class _MyHomePageState extends State {
                     onPressed: () {
                       _person.posturl = _controller.text;
                     },
-                    child: Text("更换IP"),
+                    child: Text(isChinese == 1 ? "更改IP:" : "change IP"),
                   )
                 ],
               ),
