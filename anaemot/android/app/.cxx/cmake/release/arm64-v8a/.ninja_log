@@ -1,5 +1,0 @@
-# ninja log v5
-0	81	1640054913	CMakeFiles/convertImage.dir/Classes/converter.c.o	c46354f8fbb2f603
-82	124	1640054913	/Users/xiani/Desktop/flutter_project/anaemot/build/app/intermediates/cmake/release/obj/arm64-v8a/libconvertImage.so	f40c8401caef42de
-0	54	1640080359	/Users/xiani/Desktop/flutter_project/anaemot/build/app/intermediates/cmake/release/obj/arm64-v8a/libconvertImage.so	f40c8401caef42de
-0	48	1640080453	/Users/xiani/Desktop/flutter_project/anaemot/build/app/intermediates/cmake/release/obj/arm64-v8a/libconvertImage.so	f40c8401caef42de
