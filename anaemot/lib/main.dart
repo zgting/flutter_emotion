@@ -68,9 +68,8 @@ class _MyHomePageState extends State {
   bool _isprocess = false;
   //post推送的地址
   TextEditingController _controller = TextEditingController();
-  String _posturl = "http://101.43.241.28:5050"; //默认地址
-  //static String _posturl = "http://192.168.0.104:5050/analyze";
-  //static String _posturl = "http://155.138.220.251:5000/analyze";
+  String _posturl = "http://192.168.0.104:5050"; //默认地址
+
   int isChinese = 0; //1是中文 0是英文
   //显示信息的中英文配置
   List _configtext = [
@@ -394,13 +393,6 @@ class _MyHomePageState extends State {
         width: MediaQuery.of(context).size.width * 4 / 5,
         child: LinearPercentIndicator(
           animation: true,
-          // leading: Image(
-          //   image: AssetImage(
-          //     "assets/images/mine/" + item.emotionText + ".png",
-          //   ),
-          //   width: 18,
-          //   height: 18,
-          // ),
           lineHeight: 20.0,
           animationDuration: 250,
           percent: item.emotionValue / 100,
