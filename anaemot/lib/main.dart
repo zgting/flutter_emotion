@@ -413,17 +413,25 @@ class _MyHomePageState extends State {
   Widget buildTestInfo() {
     Widget content; //单独一个widget组件，用于返回需要生成的内容widget
     List<Widget> tiles = []; //先建一个数组用于存放循环生成的widget
-
-    for (var item in _configtext) {
+    List testinfo = [
+      [_person.yuvtorgbtime, yuvavg, yuvdx],
+      [_person.imgtobase64, imageavg, imagedx],
+      [_person.dealimgtime, dealimgavg, dealimgdx],
+      [_person.totaltime, totalavg, totaldx]
+    ]; //方便便利
+    for (int i = 0; i < _configtext.length; i++) {
       tiles.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(item[0][isChinese] +
-                _person.yuvtorgbtime.toStringAsFixed(5) +
+            Text(_configtext[i][0][isChinese] +
+                testinfo[i][0].toStringAsFixed(5) +
                 " "),
-            Text(item[1][isChinese] + yuvavg.toStringAsFixed(5) + " "),
-            Text(item[2][isChinese] + yuvdx.toStringAsFixed(5)),
+            Text(_configtext[i][1][isChinese] +
+                testinfo[i][1].toStringAsFixed(5) +
+                " "),
+            Text(_configtext[i][2][isChinese] +
+                testinfo[i][2].toStringAsFixed(5)),
           ],
         ),
       );
@@ -460,33 +468,33 @@ class _MyHomePageState extends State {
                       : "pages:" + yuvtorgbl.length.toString()),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    child: TextField(
-                      controller: _controller,
-                      decoration: InputDecoration(
-                        labelText: isChinese == 1
-                            ? "请输入IP和端口:"
-                            : "Pleae Input IP and port:",
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red)),
-                      ),
-                    ),
-                    width: 220,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _person.posturl = _controller.text;
-                    },
-                    child: Text(isChinese == 1 ? "更改IP:" : "change IP"),
-                  )
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     SizedBox(
+              //       child: TextField(
+              //         controller: _controller,
+              //         decoration: InputDecoration(
+              //           labelText: isChinese == 1
+              //               ? "请输入IP和端口:"
+              //               : "Pleae Input IP and port:",
+              //           border: OutlineInputBorder(
+              //               borderSide: BorderSide(color: Colors.red)),
+              //         ),
+              //       ),
+              //       width: 220,
+              //     ),
+              //     SizedBox(
+              //       width: 5,
+              //     ),
+              //     ElevatedButton(
+              //       onPressed: () {
+              //         _person.posturl = _controller.text;
+              //       },
+              //       child: Text(isChinese == 1 ? "更改IP:" : "change IP"),
+              //     )
+              //   ],
+              // ),
               SizedBox(
                 height: 10,
               ),
