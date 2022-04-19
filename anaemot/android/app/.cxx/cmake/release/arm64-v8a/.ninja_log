@@ -1,0 +1,4 @@
+# ninja log v5
+0	77	1650327077	CMakeFiles/convertImage.dir/Classes/converter.c.o	c46354f8fbb2f603
+78	118	1650327077	/Users/xiani/Downloads/flutter_emotion/anaemot/build/app/intermediates/cmake/release/obj/arm64-v8a/libconvertImage.so	c01124e3495d3abb
+0	49	1650327525	/Users/xiani/Downloads/flutter_emotion/anaemot/build/app/intermediates/cmake/release/obj/arm64-v8a/libconvertImage.so	c01124e3495d3abb

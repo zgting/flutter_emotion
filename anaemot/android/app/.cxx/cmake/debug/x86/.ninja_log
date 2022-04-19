@@ -1,0 +1,4 @@
+# ninja log v5
+0	66	1640054754	CMakeFiles/convertImage.dir/Classes/converter.c.o	ff10ead398c6cafc
+66	114	1640054754	/Users/xiani/Desktop/flutter_project/anaemot/build/app/intermediates/cmake/debug/obj/x86/libconvertImage.so	1c0119a684c6df43
+0	68	1640078026	/Users/xiani/Desktop/flutter_project/anaemot/build/app/intermediates/cmake/debug/obj/x86/libconvertImage.so	1c0119a684c6df43

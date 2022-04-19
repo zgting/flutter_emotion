@@ -1,0 +1,3 @@
+/Users/xiani/Downloads/flutter_emotion/anaemot/android/app/.cxx/cmake/release/x86/CMakeFiles/rebuild_cache.dir
+/Users/xiani/Downloads/flutter_emotion/anaemot/android/app/.cxx/cmake/release/x86/CMakeFiles/edit_cache.dir
+/Users/xiani/Downloads/flutter_emotion/anaemot/android/app/.cxx/cmake/release/x86/CMakeFiles/convertImage.dir
