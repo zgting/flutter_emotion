@@ -8,4 +8,4 @@ cmake version 3.10.2
 
 ios需要用mac os安装Xcode环境可以使用
 
-Flutter将安卓ios摄像头流 调用deepface接口进行表情的分析。
+Flutter将安卓ios摄像头流图片 调用deepface接口进行表情的分析。
