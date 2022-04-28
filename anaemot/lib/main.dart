@@ -38,6 +38,11 @@ class Person {
 }
 
 void main() {
+    // 强制竖屏
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
   runApp(MyApp());
 }
 
